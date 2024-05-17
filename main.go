@@ -84,10 +84,41 @@ func visitarTodoTabuleiro(slice2Dint_tabuleiro [][]int8, int_linhaInicial uint8,
 	uint8_posicaoLinhaAtual := int_linhaInicial
 	uint8_posicaoColunaAtual := int_colunaInicial
 
+	//Verifica movimentos validos dessa posicao
 	slice_movimentosValidos := retornaMovimentosValidos(slice2Dint_tabuleiro, uint8_posicaoLinhaAtual, uint8_posicaoColunaAtual)
+
+	slice_proxMovimentos := make([]int8, len(slice_movimentosValidos))
+
+	for posicao := range slice_movimentosValidos {
+		// Colocar a posicao valida de todas as posicoes
+		slice_proxMovimentos[posicao] = int8(len(retornaMovimentosValidos(slice2Dint_tabuleiro, slice_movimentosValidos[posicao][0], slice_movimentosValidos[posicao][1])))
+		//slice2Dint_tabuleiro[slice_movimentosValidos[posicao][0]][slice_movimentosValidos[posicao][1]] = int8(len(retornaMovimentosValidos(slice2Dint_tabuleiro, slice_movimentosValidos[posicao][0], slice_movimentosValidos[posicao][1])))
+	}
+
+	for posicao := range slice_movimentosValidos {
+		// Colocar a posicao valida de todas as posicoes
+		slice2Dint_tabuleiro[slice_movimentosValidos[posicao][0]][slice_movimentosValidos[posicao][1]] = int8(slice_proxMovimentos[posicao])
+	}
 
 	return slice2Dint_tabuleiro
 
+}
+
+// Printar o tabuleiro
+func printTabuleiroAndWaitUserInput(slice2Dint_tabuleiro [][]int8) {
+
+	fmt.Print("IMPRIMINDO TABULEIRO\n\n")
+
+	for i := range slice2Dint_tabuleiro {
+		for j := range slice2Dint_tabuleiro[i] {
+			fmt.Printf("%d ", slice2Dint_tabuleiro[i][j])
+		}
+		fmt.Print("\n")
+	}
+
+	//Wait user input
+	fmt.Print("Aperte uma tecla para continuar!\n")
+	fmt.Scanln()
 }
 
 func main() {
@@ -104,6 +135,6 @@ func main() {
 
 	slice2Dint_tabuleiro = visitarTodoTabuleiro(slice2Dint_tabuleiro, int_linhaInicial, int_colunaInicial)
 
-	fmt.Println(slice2Dint_tabuleiro[int_linhaInicial][int_colunaInicial])
+	printTabuleiroAndWaitUserInput(slice2Dint_tabuleiro)
 
 }
